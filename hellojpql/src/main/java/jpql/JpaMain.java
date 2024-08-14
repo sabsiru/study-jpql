@@ -1,9 +1,6 @@
 package jpql;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.List;
 
 public class JpaMain {
@@ -18,7 +15,13 @@ public class JpaMain {
         try {
             Member member = new Member();
             member.setUsername("member1");
+            member.setAge(10);
             em.persist(member);
+
+            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+            //값이 둘 이상이거나 없으면 에러가남, 정확히 하나여야함
+            Member result = query.getSingleResult();
+
 
 
             tx.commit();
