@@ -24,12 +24,21 @@ public class JpaMain {
             em.clear();
 
             //엔티티 프로젝션
+<<<<<<< HEAD
             List<Member> entityResult = em.createQuery("select m from Member m", Member.class)
                     .getResultList();
 
 //            //임베디드 타입 프로젝션
             em.createQuery("select o.address from Order o", Address.class)
                     .getResultList();
+=======
+//            List<Member> result = em.createQuery("select m from Member m", Member.class)
+//                    .getResultList();
+
+//            //임베디드 타입 프로젝션
+//            em.createQuery("select o.address from Order o", Address.class)
+//                    .getResultList();
+>>>>>>> origin/main
 
             //스칼라
             List<Object[]> resultList = em.createQuery("select m.username, m.age from Member m ")
