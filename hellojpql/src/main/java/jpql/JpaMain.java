@@ -2,6 +2,7 @@ package jpql;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -22,13 +23,21 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            //파라미터 바인딩
-            Member result = em.createQuery("select m from Member m where m.username =:username", Member.class)
-                    .setParameter("username", "member1")
-                    .getSingleResult();
+            //엔티티 프로젝션
+//            List<Member> result = em.createQuery("select m from Member m", Member.class)
+//                    .getResultList();
 
-            System.out.println("singleResult = " + result.getUsername());
+//            //임베디드 타입 프로젝션
+//            em.createQuery("select o.address from Order o", Address.class)
+//                    .getResultList();
 
+            //스칼라
+            List<Object[]> resultList = em.createQuery("select m.username, m.age from Member m ")
+                    .getResultList();
+
+            Object[] result = resultList.get(0);
+            System.out.println("username = " + result[0]);
+            System.out.println("age = " + result[1]);
 
             tx.commit();
         } catch (Exception e) {
