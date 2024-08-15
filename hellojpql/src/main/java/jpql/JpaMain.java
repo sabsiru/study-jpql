@@ -18,10 +18,16 @@ public class JpaMain {
             member.setAge(10);
             em.persist(member);
 
-            TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
-            //값이 둘 이상이거나 없으면 에러가남, 정확히 하나여야함
-            Member result = query.getSingleResult();
+            //영속성 컨텍스트 비우기
+            em.flush();
+            em.clear();
 
+            //파라미터 바인딩
+            Member result = em.createQuery("select m from Member m where m.username =:username", Member.class)
+                    .setParameter("username", "member1")
+                    .getSingleResult();
+
+            System.out.println("singleResult = " + result.getUsername());
 
 
             tx.commit();
