@@ -14,29 +14,32 @@ public class JpaMain {
         tx.begin();
 
         try {
+            Team team = new Team();
+            team.setName("team1");
 
-            for(int i =0; i<100; i++){
-                Member member = new Member();
-                member.setUsername("member"+i);
-                member.setAge(i);
-                em.persist(member);
-            }
+            em.persist(team);
+
+            Member member = new Member();
+            member.setUsername("member");
+            member.setAge(10);
+
+            member.setTeam(team);
+
+            em.persist(member);
 
             //영속성 컨텍스트 비우기
             em.flush();
             em.clear();
 
-            //페이징 API
-            List<Member> result = em.createQuery("select m from Member m order by m.age desc", Member.class)
-                    .setFirstResult(0)
-                    .setMaxResults(10)
+            //Join
+            String innerJoin = "select m from Member m inner join m.team t";
+            String outerJoin = "select m from Member m left join m.team t";
+            String crossJoin = "select m from Member m, Team t where m.username = t.name";
+            List<Member> resultList = em.createQuery(crossJoin, Member.class)
                     .getResultList();
-
-            System.out.println("result.size() = " + result.size());
-            for (Member member1 : result) {
-                System.out.println("member1 = " + member1);
-            }
-
+            int size = resultList.size();
+            //결과가 없으므로 size = 0
+            System.out.println("size = " + size);
 
             tx.commit();
         } catch (Exception e) {
