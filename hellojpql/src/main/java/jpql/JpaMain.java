@@ -15,7 +15,7 @@ public class JpaMain {
 
         try {
             Team team = new Team();
-            team.setName("team1");
+            team.setName("teamA");
 
             em.persist(team);
 
@@ -32,10 +32,9 @@ public class JpaMain {
             em.clear();
 
             //Join
-            String innerJoin = "select m from Member m inner join m.team t";
-            String outerJoin = "select m from Member m left join m.team t";
-            String crossJoin = "select m from Member m, Team t where m.username = t.name";
-            List<Member> resultList = em.createQuery(crossJoin, Member.class)
+            //String query = "select m from Member m left join m.team t on t.name = 'teamA'";
+            String query = "select m from Member m left join Team t on m.username = t.name";
+            List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
             int size = resultList.size();
             //결과가 없으므로 size = 0
