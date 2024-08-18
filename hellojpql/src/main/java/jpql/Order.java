@@ -16,6 +16,9 @@ public class Order {
     @JoinColumn(name ="PRODUCT_ID")
     private Product product;
 
+    @ManyToOne
+    private Member member;
+
     public Long getId() {
         return id;
     }
@@ -46,5 +49,13 @@ public class Order {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

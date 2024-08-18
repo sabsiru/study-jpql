@@ -31,9 +31,11 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            //Join
-            //String query = "select m from Member m left join m.team t on t.name = 'teamA'";
-            String query = "select m from Member m left join Team t on m.username = t.name";
+            //서브쿼리
+            //String query = "select m from Member m where m.age > (select avg(m2.age) from Member m2)";
+            //String query = "select m from Member m where (select count(o) from Order o where m = o.member) >0";
+            //from 절 서브쿼리는 X 에러남
+            String query = "select mm from (select m2.username from Member m2 where age>13) as mm";
             List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
             int size = resultList.size();
