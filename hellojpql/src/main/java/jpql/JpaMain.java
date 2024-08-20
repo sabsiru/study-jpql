@@ -14,33 +14,39 @@ public class JpaMain {
         tx.begin();
 
         try {
-            Team team = new Team();
-            team.setName("teamA");
+            Team teamA = new Team();
+            teamA.setName("팀A");
+            em.persist(teamA);
 
-            em.persist(team);
+            Team teamB = new Team();
+            teamB.setName("팀B");
+            em.persist(teamB);
 
-            Member member = new Member();
-            member.setUsername("member");
-            member.setAge(10);
+            Member member1 = new Member();
+            member1.setUsername("회원1");
+            member1.setTeam(teamA);
+            em.persist(member1);
+            Member member2 = new Member();
+            member2.setUsername("회원1");
+            member2.setTeam(teamA);
+            em.persist(member2);
+            Member member3 = new Member();
+            member3.setUsername("회원1");
+            member3.setTeam(teamB);
+            em.persist(member3);
 
-            member.setTeam(team);
-
-            em.persist(member);
 
             //영속성 컨텍스트 비우기
             em.flush();
             em.clear();
 
-            //서브쿼리
-            //String query = "select m from Member m where m.age > (select avg(m2.age) from Member m2)";
-            //String query = "select m from Member m where (select count(o) from Order o where m = o.member) >0";
-            //from 절 서브쿼리는 X 에러남
-            String query = "select mm from (select m2.username from Member m2 where age>13) as mm";
+            String query = "select m from Member m join fetch m.team";
             List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
-            int size = resultList.size();
-            //결과가 없으므로 size = 0
-            System.out.println("size = " + size);
+
+            for (Member member : resultList) {
+                System.out.println("회원: " + member.getUsername()+", "+ member.getTeam().getName());
+            }
 
             tx.commit();
         } catch (Exception e) {
