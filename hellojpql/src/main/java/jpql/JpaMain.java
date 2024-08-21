@@ -40,12 +40,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select m from Member m join fetch m.team";
-            List<Member> resultList = em.createQuery(query, Member.class)
+            //중복제거
+            String query = "select distinct t from Team t join fetch t.members";
+            List<Team> resultList = em.createQuery(query, Team.class)
                     .getResultList();
 
-            for (Member member : resultList) {
-                System.out.println("회원: " + member.getUsername()+", "+ member.getTeam().getName());
+            for (Team team : resultList) {
+                System.out.println("팀: " + team.getName()+"| memebers =  "+ team.getMembers());
             }
 
             tx.commit();
