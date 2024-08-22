@@ -40,15 +40,12 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select t from Team t ";
-            List<Team> resultList = em.createQuery(query, Team.class)
-                    .setFirstResult(0)
-                    .setMaxResults(2)
-                    .getResultList();
+            //엔티티를 직접 사용하면 기본 키값으로 변환된다.
+            String query = "select m from Member m where m = :member ";
+            Member findMember = em.createQuery(query, Member.class)
+                    .setParameter("member", member1)
+                    .getSingleResult();
 
-            for (Team team : resultList) {
-                System.out.println("팀: " + team.getName()+"| memebers =  "+ team.getMembers());
-            }
 
             tx.commit();
         } catch (Exception e) {
