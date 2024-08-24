@@ -40,11 +40,15 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            //엔티티를 직접 사용하면 기본 키값으로 변환된다.
-            String query = "select m from Member m where m = :member ";
-            Member findMember = em.createQuery(query, Member.class)
-                    .setParameter("member", member1)
-                    .getSingleResult();
+            //엔티티 직접 사용 - 외래 키 값
+            String query = "select m from Member m where m.team = :team ";
+            List<Member> members = em.createQuery(query, Member.class)
+                    .setParameter("team", teamA)
+                    .getResultList();
+
+            for (Member member : members) {
+                System.out.println("member = " + member);
+            }
 
 
             tx.commit();
