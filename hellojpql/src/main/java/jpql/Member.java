@@ -3,6 +3,11 @@ package jpql;
 import javax.persistence.*;
 
 @Entity
+//실무에서는 spring data jpa를 주로 사용하게 될것.
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.username = :username"
+)
 public class Member {
     @Id @GeneratedValue
     private Long id;

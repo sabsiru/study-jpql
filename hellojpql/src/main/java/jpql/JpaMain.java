@@ -27,11 +27,11 @@ public class JpaMain {
             member1.setTeam(teamA);
             em.persist(member1);
             Member member2 = new Member();
-            member2.setUsername("회원1");
+            member2.setUsername("회원2");
             member2.setTeam(teamA);
             em.persist(member2);
             Member member3 = new Member();
-            member3.setUsername("회원1");
+            member3.setUsername("회원3");
             member3.setTeam(teamB);
             em.persist(member3);
 
@@ -40,16 +40,13 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            //엔티티 직접 사용 - 외래 키 값
-            String query = "select m from Member m where m.team = :team ";
-            List<Member> members = em.createQuery(query, Member.class)
-                    .setParameter("team", teamA)
+            List<Member> resultList = em.createNamedQuery("Member.findByUsername", Member.class)
+                    .setParameter("username", "회원2")
                     .getResultList();
 
-            for (Member member : members) {
+            for (Member member : resultList) {
                 System.out.println("member = " + member);
             }
-
 
             tx.commit();
         } catch (Exception e) {
