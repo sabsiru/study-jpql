@@ -43,8 +43,16 @@ public class JpaMain {
             //영속성을 비우지 않으면 영속성 컨텍스트가 불러와져서 0이 나온다.
             //컨텍스트를 비우고 새로 find하면 db의 값을 가져온다.
             em.clear();
+<<<<<<< Updated upstream
 
             Member findMember1 = em.find(Member.class, member1.getId());
+=======
+            
+            String query = "select m from Member m where m = :member ";
+            Member findMember = em.createQuery(query, Member.class)
+                    .setParameter("member", member1)
+                    .getSingleResult();
+>>>>>>> Stashed changes
 
             System.out.println("컨텍스트를 비우고 난 후 findMember1.getAge() = " + findMember1.getAge());
             System.out.println("컨텍스트를 비우기 전 findMember2.getAge() = " + findMember2.getAge());
